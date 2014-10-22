@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 
@@ -30,6 +28,7 @@ namespace AnnotationsAnalizer
                 return;
 
             Assembly assembly = Assembly.LoadFile(filename);
+            Type changesAttrType = assembly.GetType("AnnotationsAnalizer.ChangesAttribute");
 
             foreach (Type type in assembly.GetTypes())
             {
@@ -37,10 +36,10 @@ namespace AnnotationsAnalizer
                 MemberAnnotationInfo codeUnit = SaveOrGetMember(type.FullName);
                 
                 //  сохраняем аттрибуты типа
-                var attrs = type.GetCustomAttributes(typeof(ChangesAttribute), true);
-                foreach (ChangesAttribute attribute in attrs)
+                var attrs = type.GetCustomAttributes(changesAttrType, true);
+                foreach (object attribute in attrs)
                 {
-                    AnnotationInfo info = AnnotationInfo.FromAttribute(attribute);
+                    AnnotationInfo info = AnnotationInfo.FromAttribute(attribute, changesAttrType);
                     info.CodeUnt = codeUnit;
                     SaveAnnotation(info);
                 }
@@ -53,10 +52,10 @@ namespace AnnotationsAnalizer
                 {
                     codeUnit = SaveOrGetMember(type.FullName + "." + method.Name);
                     
-                    var methodAttrs = method.GetCustomAttributes(typeof(ChangesAttribute), true);
-                    foreach (ChangesAttribute attribute in methodAttrs)
+                    var methodAttrs = method.GetCustomAttributes(changesAttrType, true);
+                    foreach (object attribute in methodAttrs)
                     {
-                        AnnotationInfo info = AnnotationInfo.FromAttribute(attribute);
+                        AnnotationInfo info = AnnotationInfo.FromAttribute(attribute, changesAttrType);
                         info.CodeUnt = codeUnit;
                         SaveAnnotation(info);
                     }

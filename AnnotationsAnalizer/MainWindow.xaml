@@ -2,19 +2,23 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Model="clr-namespace:AnnotationsAnalizer.Model" mc:Ignorable="d" x:Class="AnnotationsAnalizer.MainWindow"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+        Title="MainWindow" Height="373.684" Width="836.842" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="annotationInfoViewSource" d:DesignSource="{d:DesignInstance {x:Type Model:AnnotationInfo}, CreateList=True}"/>
     </Window.Resources>
-    <Grid Height="320" VerticalAlignment="Top" HorizontalAlignment="Left" Width="517" DataContext="{StaticResource annotationInfoViewSource}">
+    <Grid Height="364" VerticalAlignment="Top" HorizontalAlignment="Left" Width="827" DataContext="{StaticResource annotationInfoViewSource}" Margin="0,0,0,-20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="717*"/>
+            <ColumnDefinition Width="110*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="59*"/>
-            <RowDefinition Height="261*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="21*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="AssemblyFileNameTextBox"  HorizontalAlignment="Left" Height="47" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="394"/>
-        <Button Content="Открыть сборку" HorizontalAlignment="Left" Margin="409,10,0,0" VerticalAlignment="Top" Width="98" Click="Open_Assembly_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="20" Margin="409,37,0,0" VerticalAlignment="Top" Width="98" Click="Button_Click"/>
-        <DataGrid x:Name="annotationInfoDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10" Grid.Row="1" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <TextBox x:Name="AssemblyFileNameTextBox" Margin="10,10,11,13" TextWrapping="Wrap"/>
+        <Button Content="Открыть сборку" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="98" Click="Open_Assembly_Click" Grid.Column="1" Height="22"/>
+        <Button Content="Анализировать" HorizontalAlignment="Left" Height="20" Margin="3,41,0,0" VerticalAlignment="Top" Width="98" Click="Button_Click" Grid.Column="1"/>
+        <DataGrid x:Name="annotationInfoDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,10,0,0" Grid.Row="1" RowDetailsVisibilityMode="VisibleWhenSelected" Height="270" VerticalAlignment="Top" HorizontalAlignment="Left" Width="809" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTemplateColumn x:Name="codeUnitColumn" Header="CodeUnit" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>

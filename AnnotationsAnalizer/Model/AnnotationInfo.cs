@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
 using System.Collections.Generic;
+using System.Reflection;
 
 
 namespace AnnotationsAnalizer.Model
@@ -26,16 +27,25 @@ namespace AnnotationsAnalizer.Model
 
         public MemberAnnotationInfo CodeUnt { get; set; }
 
-        public static AnnotationInfo FromAttribute(AnnotationsAnalizer.ChangesAttribute attr)
+        public static AnnotationInfo FromAttribute(object attr, Type type)
         {
+            string author, reason, dateStr;
+            try
+            {
+                author = (string)type.GetProperty("Author").GetValue(attr);
+                reason = (string)type.GetProperty("Reason").GetValue(attr);
+                dateStr = (string)type.GetProperty("Date").GetValue(attr);
+            }
+            catch { return null; }
+
             DateTime date = DateTime.Now;
 
-            DateTime.TryParse(attr.Date, out date);
+            DateTime.TryParse(dateStr, out date);
 
             AnnotationInfo result = new AnnotationInfo()
             {
-                Author = attr.Author,
-                Reason = attr.Reason,
+                Author = author,
+                Reason = reason,
                 Date = date,
                 DateOfEntry = DateTime.Now
             };
